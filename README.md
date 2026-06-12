@@ -1,26 +1,65 @@
-# app
+# Tally
 
-The engineering foundation for the company's products: a minimal but real
-**TypeScript + [Fastify](https://fastify.dev/)** web service that serves a
-hello-world HTML page and a JSON health endpoint. It exists to give every future
-product a clean, tested, lintable starting point with CI already wired up.
+A fast, **no-login daily task & habit tracker** for the web. Plan today, check
+things off, and keep daily habit streaks going — state is saved in your browser,
+so there's no account and no setup.
 
-## Stack
+> **Live:** _set after the first GitHub Pages deploy_ — see [Deploy](#deploy).
 
-| Concern         | Choice                                           |
-| --------------- | ------------------------------------------------ |
-| Language        | TypeScript (ES2022, ESM / NodeNext)              |
-| Runtime         | Node.js (>= 20; CI runs 22)                      |
-| HTTP server     | Fastify 5                                        |
-| Tests           | Vitest                                           |
-| Lint / format   | ESLint 9 (flat config) + Prettier                |
-| CI              | GitHub Actions (lint → typecheck → build → test) |
-| Package manager | npm                                              |
+Tally is app #1 built on the company's engineering foundation
+(**TypeScript + [Fastify](https://fastify.dev/)**). It's intentionally tight:
+tasks, habits with streaks, and local persistence — no accounts, sync, or
+backend.
 
-> **Frontend:** intentionally deferred. The server returns a real HTML page and
-> a JSON endpoint, so we have both a "page" and an "endpoint" without committing
-> the still-undecided product to a specific SPA framework. Adding Vite + React/Vue
-> later is a clean, reversible follow-up.
+## Features
+
+- **Tasks** — add, edit (double-click or ✎), complete, and delete today's tasks;
+  completed tasks are visibly struck through and sink to the bottom.
+- **Habits** — track a small set of daily habits, mark them done/undone for
+  today, and watch the 🔥 streak grow. A streak counts consecutive completed
+  days and stays alive on a new day until you either extend or miss it.
+- **Persistence** — everything is saved to `localStorage` and survives reloads.
+  No login, no server-side state.
+
+## Architecture
+
+Tally is a **static, client-side single-page app**. All domain logic lives in
+pure, unit-tested TypeScript; the DOM layer is a thin renderer over it.
+
+| Concern       | Choice                                                           |
+| ------------- | ---------------------------------------------------------------- |
+| Language      | TypeScript (ES2022, ESM)                                         |
+| Client        | Vanilla TS → native ES modules (no framework, no bundler)        |
+| Persistence   | Browser `localStorage` (versioned key `tally.state.v1`)          |
+| Local server  | Fastify 5 — serves the same `public/` assets + a JSON `/healthz` |
+| Tests         | Vitest (pure logic + a server smoke test)                        |
+| Lint / format | ESLint 9 (flat config) + Prettier                                |
+| CI            | GitHub Actions (lint → typecheck → build → test)                 |
+| Deploy        | GitHub Actions → GitHub Pages (static, free, no secrets)         |
+
+The Fastify server isn't required to run Tally in production (Pages serves the
+static files directly), but it's retained as the local dev server and the
+foundation future products will build on.
+
+```
+.
+├─ src/
+│  ├─ app.ts          # buildApp(): Fastify — serves public/ + /healthz
+│  ├─ server.ts       # entrypoint: starts the HTTP server
+│  └─ web/
+│     ├─ core.ts      # pure domain logic: tasks, habits, streaks, persistence
+│     └─ main.ts      # DOM + localStorage layer (browser only)
+├─ public/
+│  ├─ index.html      # the single page (committed)
+│  ├─ styles.css      # styles (committed)
+│  └─ *.js            # compiled from src/web by `build:web` (generated, gitignored)
+├─ test/
+│  ├─ tally.test.ts   # unit tests for the pure core logic
+│  └─ smoke.test.ts   # server smoke test via app.inject()
+├─ .github/workflows/ # ci.yml (checks) + pages.yml (deploy)
+├─ tsconfig.json      # server build (Node)
+└─ tsconfig.web.json  # browser build (DOM → public/)
+```
 
 ## Requirements
 
@@ -33,67 +72,43 @@ product a clean, tested, lintable starting point with CI already wired up.
 npm install
 ```
 
-## Run
-
-Development (auto-reloads on change, no build step):
+## Run locally
 
 ```bash
-npm run dev
+npm run dev     # builds the browser bundle, then serves with auto-reload
 ```
 
-Production (compile to `dist/`, then run):
+Then open <http://localhost:3000/>. The port/host can be overridden with the
+`PORT` and `HOST` environment variables (defaults `3000` / `0.0.0.0`).
+
+For a production-style run:
 
 ```bash
-npm run build
+npm run build   # build:server (dist/) + build:web (public/*.js)
 npm start
 ```
 
-Then open <http://localhost:3000/> for the hello-world page, or hit the JSON
-endpoint:
+## Test, lint, typecheck
 
 ```bash
-curl http://localhost:3000/healthz
-# {"status":"ok","message":"Hello, world!"}
+npm test            # Vitest (unit + smoke)
+npm run lint        # ESLint
+npm run typecheck   # tsc --noEmit for both server and browser configs
+npm run format      # Prettier (write)
 ```
-
-The port and host can be overridden with the `PORT` and `HOST` environment
-variables (defaults: `3000` and `0.0.0.0`).
-
-## Test
-
-```bash
-npm test
-```
-
-Runs the Vitest suite once (including the smoke test in
-[`test/smoke.test.ts`](test/smoke.test.ts)). Use `npm run test:watch` for the
-interactive watcher.
-
-## Lint & format
-
-```bash
-npm run lint          # ESLint
-npm run typecheck     # tsc --noEmit
-npm run format        # Prettier (write)
-npm run format:check  # Prettier (check only)
-```
-
-## Project layout
-
-```
-.
-├─ src/
-│  ├─ app.ts        # buildApp(): configures the Fastify instance (routes)
-│  └─ server.ts     # entrypoint: starts the HTTP server
-├─ test/
-│  └─ smoke.test.ts # smoke test using Fastify's app.inject() (no real port)
-├─ .github/workflows/ci.yml
-├─ eslint.config.js
-├─ tsconfig.json
-└─ package.json
-```
-
-## How CI maps to local commands
 
 CI (`.github/workflows/ci.yml`) runs exactly what you can run locally:
 `npm ci` → `npm run lint` → `npm run typecheck` → `npm run build` → `npm test`.
+
+## Deploy
+
+Pushing to `main` triggers `.github/workflows/pages.yml`, which builds the
+browser bundle and publishes `public/` to **GitHub Pages**. To enable it on a
+fresh repo: in **Settings → Pages**, set the source to **GitHub Actions** (done
+once). The live URL then appears on the Actions run and in the Pages settings.
+
+## Out of scope (v1)
+
+Accounts/login, multi-device sync, mobile-native, sharing, reminders, and
+analytics are deliberately deferred — the obvious extension path once the
+pipeline is proven.
