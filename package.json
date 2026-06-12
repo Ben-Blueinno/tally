@@ -2,16 +2,18 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
-  "description": "Engineering foundation: a minimal but real TypeScript + Fastify web app (hello-world page + JSON endpoint).",
+  "description": "Tally — a no-login daily task & habit tracker (TypeScript + Fastify foundation).",
   "type": "module",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "npm run build:web && tsx watch src/server.ts",
     "start": "node dist/server.js",
-    "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "npm run build:server && npm run build:web",
+    "build:server": "tsc -p tsconfig.json",
+    "build:web": "tsc -p tsconfig.web.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.web.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
@@ -19,6 +21,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@fastify/static": "^9.1.3",
     "fastify": "^5.2.0"
   },
   "devDependencies": {

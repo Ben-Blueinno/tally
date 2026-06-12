@@ -1,0 +1,19 @@
+{
+  "//": "Browser build: compiles src/web/*.ts to plain ES-module JS in public/.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "outDir": "public",
+    "rootDir": "src/web",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/web"]
+}

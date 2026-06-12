@@ -4,6 +4,11 @@ node_modules/
 # Build output
 dist/
 
+# Compiled browser bundle (built into public/ from src/web by `npm run build:web`).
+# index.html and styles.css are source and ARE committed; the JS is generated.
+public/*.js
+public/*.js.map
+
 # Test / coverage
 coverage/
 

@@ -17,5 +17,7 @@
     "sourceMap": true,
     "resolveJsonModule": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "//": "src/web is the browser bundle (DOM lib, ES modules); built separately via tsconfig.web.json.",
+  "exclude": ["src/web"]
 }
