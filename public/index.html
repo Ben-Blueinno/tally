@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Tally — a fast, no-login daily task & habit tracker. Plan today, check things off, build streaks."
+    />
+    <title>Tally — plan today</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="app__header">
+        <h1 class="app__title">Tally</h1>
+        <p class="app__tagline">Plan today. Check it off. Keep the streak.</p>
+      </header>
+
+      <section class="card" aria-labelledby="tasks-heading">
+        <h2 id="tasks-heading">Today's tasks</h2>
+        <form id="task-form" class="add-form" autocomplete="off">
+          <input
+            id="task-input"
+            class="add-form__input"
+            type="text"
+            name="task"
+            placeholder="Add a task and press Enter"
+            aria-label="New task"
+            maxlength="200"
+            required
+          />
+          <button type="submit" class="add-form__btn">Add</button>
+        </form>
+        <p id="task-empty" class="empty" hidden>
+          No tasks yet — add the first thing you want to do today.
+        </p>
+        <ul id="task-list" class="list"></ul>
+      </section>
+
+      <section class="card" aria-labelledby="habits-heading">
+        <h2 id="habits-heading">Daily habits</h2>
+        <form id="habit-form" class="add-form" autocomplete="off">
+          <input
+            id="habit-input"
+            class="add-form__input"
+            type="text"
+            name="habit"
+            placeholder="Add a habit to track"
+            aria-label="New habit"
+            maxlength="80"
+            required
+          />
+          <button type="submit" class="add-form__btn">Add</button>
+        </form>
+        <p id="habit-empty" class="empty" hidden>No habits yet — add one to start a streak.</p>
+        <ul id="habit-list" class="list"></ul>
+      </section>
+
+      <footer class="app__footer">
+        Saved automatically in this browser. No account, no sync — just today.
+      </footer>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

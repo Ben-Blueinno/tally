@@ -1,0 +1,250 @@
+/* Tally — single-page styles. Mobile-first, no framework. */
+:root {
+  --bg: #0f172a;
+  --bg-card: #1e293b;
+  --bg-row: #273449;
+  --border: #334155;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --accent: #38bdf8;
+  --accent-strong: #0ea5e9;
+  --danger: #f87171;
+  --done: #22c55e;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+.app__header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.app__title {
+  margin: 0;
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--accent), #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.app__tagline {
+  margin: 0.25rem 0 0;
+  color: var(--text-muted);
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.card h2 {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+}
+
+/* Add form */
+.add-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.add-form__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-row);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.add-form__input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.add-form__btn {
+  padding: 0.6rem 1.1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent-strong);
+  color: #042330;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.add-form__btn:hover {
+  background: var(--accent);
+}
+
+/* Lists & rows */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-row);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.row input[type="checkbox"] {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--done);
+  cursor: pointer;
+  flex: none;
+}
+
+.row__title {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+  cursor: default;
+}
+
+.row__edit {
+  flex: 1;
+  min-width: 0;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.row--done .row__title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.icon-btn {
+  flex: none;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.3rem 0.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background: rgba(148, 163, 184, 0.15);
+  color: var(--text);
+}
+
+.icon-btn--danger:hover {
+  color: var(--danger);
+}
+
+/* Habits */
+.streak {
+  flex: none;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  filter: grayscale(1);
+}
+
+.streak--active {
+  color: #fbbf24;
+  filter: none;
+  font-weight: 600;
+}
+
+.habit-toggle {
+  flex: none;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.habit-toggle:hover {
+  border-color: var(--accent);
+}
+
+.habit-toggle--done {
+  background: var(--done);
+  border-color: var(--done);
+  color: #052e16;
+  font-weight: 600;
+}
+
+.empty {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0.25rem 0 0;
+}
+
+.app__footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 420px) {
+  .app__title {
+    font-size: 2rem;
+  }
+  .habit-toggle {
+    padding: 0.3rem 0.55rem;
+  }
+}
