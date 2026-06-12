@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Test / coverage
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Env / local secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Paperclip managed-checkout scratch files (empty leftovers from other agents'
+# runs in this folder; not part of the app — ignored so they never get committed)
+_hire_ada_agents.md
+_hire_payload.json
+_issue_tmp.json
+_plan_payload.json
