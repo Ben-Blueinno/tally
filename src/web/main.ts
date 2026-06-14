@@ -17,6 +17,7 @@ import {
   deleteTask,
   deserialize,
   editTask,
+  greeting,
   habitStreak,
   isHabitDone,
   serialize,
@@ -190,7 +191,12 @@ function renderHabits(): void {
   }
 }
 
+function renderGreeting(): void {
+  $<HTMLParagraphElement>("greeting").textContent = greeting(new Date());
+}
+
 function render(): void {
+  renderGreeting();
   renderTasks();
   renderHabits();
 }

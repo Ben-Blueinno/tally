@@ -7,6 +7,7 @@ import {
   deleteTask,
   deserialize,
   editTask,
+  greeting,
   habitStreak,
   isHabitDone,
   serialize,
@@ -30,6 +31,28 @@ describe("date helpers", () => {
     expect(shiftDay("2026-06-01", -1)).toBe("2026-05-31");
     expect(shiftDay("2026-12-31", 1)).toBe("2027-01-01");
     expect(shiftDay("2026-03-01", -1)).toBe("2026-02-28"); // 2026 is not a leap year
+  });
+
+  it("greeting picks the right phrase for the local hour", () => {
+    const at = (hour: number) => greeting(new Date(2026, 5, 14, hour, 0, 0));
+
+    // Morning: 05:00–11:59
+    expect(at(5)).toBe("Good morning");
+    expect(at(8)).toBe("Good morning");
+    expect(at(11)).toBe("Good morning");
+
+    // Afternoon: 12:00–16:59
+    expect(at(12)).toBe("Good afternoon");
+    expect(at(16)).toBe("Good afternoon");
+
+    // Evening: 17:00–20:59
+    expect(at(17)).toBe("Good evening");
+    expect(at(20)).toBe("Good evening");
+
+    // Night: 21:00–04:59 (wraps past midnight)
+    expect(at(21)).toBe("Good night");
+    expect(at(0)).toBe("Good night");
+    expect(at(4)).toBe("Good night");
   });
 });
 

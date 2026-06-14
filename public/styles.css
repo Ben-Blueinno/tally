@@ -50,6 +50,18 @@ body {
   margin-bottom: 1.75rem;
 }
 
+.app__greeting {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+}
+
+.app__greeting:empty {
+  display: none;
+}
+
 .app__title {
   margin: 0;
   font-size: 2.5rem;
